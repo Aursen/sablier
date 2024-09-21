@@ -39,6 +39,7 @@ spl-token.workspace = true
 tar.workspace = true
 thiserror.workspace = true
 termcolor.workspace = true
+solana-account-decoder.workspace = true
 
 [[bin]]
 name = "sablier"

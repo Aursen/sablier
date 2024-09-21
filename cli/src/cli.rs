@@ -101,6 +101,10 @@ pub enum CliCommand {
         rate_limit: Option<u64>,
         schedule: Option<String>,
     },
+    ThreadExecute {
+        key: Pubkey,
+        worker_id: u64,
+    },
 
     // Registry
     RegistryGet,
@@ -626,6 +630,19 @@ pub fn app() -> Command {
                                 .required(false)
                                 .help("The cron schedule of the thread"),
                         ),
+                ).subcommand(
+                    Command::new("execute")
+                    .arg_required_else_help(true)
+                    .arg(
+                        Arg::new("key")
+                            .index(1)
+                            .help("The id of the thread to lookup"),
+                    )
+                    .arg(
+                        Arg::new("worker_id")
+                        .short('w')
+                        .help("The worker id")
+                    )
                 ),
         )
         .subcommand(

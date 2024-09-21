@@ -220,6 +220,10 @@ fn parse_thread_command(matches: &ArgMatches) -> Result<CliCommand, CliError> {
             rate_limit: parse_u64("rate_limit", matches).ok(),
             schedule: parse_string("schedule", matches).ok(),
         }),
+        Some(("execute", matches)) => Ok(CliCommand::ThreadExecute {
+            key: parse_pubkey("key", matches)?,
+            worker_id: parse_u64("worker_id", matches).unwrap(),
+        }),
         _ => Err(CliError::CommandNotRecognized(
             matches.subcommand().unwrap().0.into(),
         )),

@@ -3634,6 +3634,7 @@ dependencies = [
  "sablier-webhook-program",
  "serde",
  "serde_json",
+ "solana-account-decoder",
  "solana-cli-config",
  "solana-client",
  "solana-sdk",

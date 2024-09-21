@@ -6,6 +6,7 @@ mod errors;
 mod parser;
 mod print;
 mod processor;
+mod temp;
 
 use {
     crate::{config::CliConfig, print::print_style},

@@ -8,7 +8,7 @@ use sablier_thread_program::state::{
 use sablier_utils::CrateInfo;
 use solana_sdk::pubkey::Pubkey;
 
-use crate::{client::Client, errors::CliError};
+use crate::{client::Client, errors::CliError, temp::build_thread_exec_tx};
 
 pub fn crate_info(client: &Client) -> Result<(), CliError> {
     let ix = Instruction {
@@ -171,4 +171,17 @@ pub fn parse_pubkey_from_id_or_address(
 ) -> Result<Pubkey, CliError> {
     let address_from_id = id.map(|str| Thread::pubkey(authority, str.into(), None));
     address.or(address_from_id).ok_or(CliError::InvalidAddress)
+}
+
+pub fn execute(client: &Client, key: Pubkey, worker_id: u64) -> Result<(), CliError> {
+    let slot = client.get_slot().map_err(|_| CliError::NotImplemented)?;
+    let data = client.get_account_data(&key).unwrap();
+    let thread = VersionedThread::try_deserialize(&mut data.as_slice()).unwrap();
+
+    let tx = build_thread_exec_tx(client, slot, thread, key, worker_id)
+        .unwrap()
+        .unwrap();
+
+    client.send_and_confirm_transaction(&tx).unwrap();
+    Ok(())
 }

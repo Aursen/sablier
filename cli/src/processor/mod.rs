@@ -116,6 +116,7 @@ pub fn process(matches: &ArgMatches) -> Result<(), CliError> {
             rate_limit,
             schedule,
         } => thread::update(&client, id, rate_limit, schedule),
+        CliCommand::ThreadExecute { key, worker_id } => thread::execute(&client, key, worker_id),
         CliCommand::RegistryGet => registry::get(&client),
         CliCommand::RegistryUnlock => registry::unlock(&client),
         CliCommand::WebhookCreate {
